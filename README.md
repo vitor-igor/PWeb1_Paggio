@@ -23,5 +23,5 @@ Algumas das tecnologias utilizadas serão:
 
 -   [Nome Completo do Integrante 1]
 -   [Nome Completo do Integrante 2]
--   [Nome Completo do Integrante 3]
+-   Thatyane Iasmyn Andrade Alves
 -   Vitor Igor Lessa da Costa
