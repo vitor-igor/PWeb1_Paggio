@@ -22,6 +22,6 @@ Algumas das tecnologias utilizadas serão:
 ## Integrantes do Grupo
 
 -   Eduardo Brito Oliveira
--   [Nome Completo do Integrante 2]
+-   Kaeljane Ferreira da Silva
 -   Thatyane Iasmyn Andrade Alves
 -   Vitor Igor Lessa da Costa
