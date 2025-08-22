@@ -3,6 +3,7 @@
 server/__pycache__/
 server/instance/
 server/venv/
+server/**/__pycache__/
 
 ### Client
 

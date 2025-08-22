@@ -1,10 +1,11 @@
 import requests
-import string
 
-from app import app
-from models.models import db, Author, Book, Genre, Authors_in_Book, Genres_in_Book
+from .models import db, Author, Book, Genre, Authors_in_Book, Genres_in_Book
 
+# Função para inserir author no BD (caso não exista) e instanciar o relacionamento entre book e author
 def insert_author(info, book):
+    """Inserir author no BD (caso não exista) e instanciar o relacionamento entre book e author"""
+
     for name_author in info.get("authors", []):
         author = Author.query.filter_by(name=name_author).first()
         if not author:
@@ -13,7 +14,10 @@ def insert_author(info, book):
             db.session.flush()
         db.session.add(Authors_in_Book(id_book=book.id, id_author=author.id))
 
+# Função para inserir genre no BD (caso não exista) e instanciar o relacionamento entre book e genre
 def insert_genre(info, book):
+    """Inserir genre no BD (caso não exista) e instanciar o relacionamento entre book e genre"""
+
     for name_genre in info.get("categories", []):
         genre = Genre.query.filter_by(name=name_genre).first()
         if not genre:
@@ -24,7 +28,10 @@ def insert_genre(info, book):
 
     db.session.commit()
 
+# Função para inserir book no BD (caso não exista)
 def insert_book(volume):
+    """Inserir book no BD (caso não exista)"""
+
     info = volume.get("volumeInfo", {})
 
     title = info.get("title", "Sem título")
@@ -54,11 +61,13 @@ def insert_book(volume):
 
     insert_genre(info, book)
 
+# Função que busca dados da API GoogleBooks de acordo com uma query informada e, através da fnção 'insert_book', adiciona-os no BD
+def import_books(query="ficcao", total=60):
+    """Busca dados da API GoogleBooks de acordo com uma query informada e, através da fnção 'insert_book', adiciona-os no BD"""
 
-
-def import_books(query="ficcao", total=120):
     max_por_lote = 40
     print(f"Buscando {total} livros de {query}...")
+
     for start in range(0, total, max_por_lote):
         url = f"https://www.googleapis.com/books/v1/volumes?q={query}&startIndex={start}&maxResults={max_por_lote}"
         res = requests.get(url)
@@ -69,25 +78,3 @@ def import_books(query="ficcao", total=120):
                 insert_book(volume)
         except Exception as e:
             print(f"Erro ao buscar ou inserir livros: {e}")
-
-if __name__ == "__main__":
-    with app.app_context():
-        import_books(query="Conceição Evaristo")
-        import_books(query="Clarice Lispector")
-        import_books(query="Carla Madeira")
-        import_books(query="Aline Bei")
-        import_books(query="Machado de Assis")
-        import_books(query="Taylor Jenkins Reid")
-        import_books(query="Stephen King")
-        import_books(query="John Green")
-        
-        import_books(query="Harry Potter")
-        import_books(query="Percy Jackson")
-        import_books(query="Evelyn Hugo")
-        import_books(query="Crime e Castigo")
-        import_books(query="Algoritmos")
-        import_books(query="Quem é voce Alasca")
-        import_books(query="As vantagens de ser invisível")
-
-        for letra in string.ascii_lowercase:
-            import_books(query=letra)

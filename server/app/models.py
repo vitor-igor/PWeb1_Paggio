@@ -10,7 +10,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(80), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
-    password = db.Column(db.String(45), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
     image = db.Column(db.Text)
     count_followers = db.Column(db.Integer, default=0)
     count_following = db.Column(db.Integer, default=0)
@@ -23,7 +23,6 @@ class User(db.Model, UserMixin):
 class Following(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     date = db.Column(db.DateTime, default=datetime.now())
-
     id_follower = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
     id_followed = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
 
@@ -48,7 +47,6 @@ class Author(db.Model):
 class Authors_in_Book(db.Model):
     __tablename__ = "authors_book"
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-
     id_book = db.Column(db.String(36), db.ForeignKey('book.id'), nullable=False)
     id_author = db.Column(db.String(36), db.ForeignKey('author.id'), nullable=False)
 
@@ -59,14 +57,12 @@ class Genre(db.Model):
 class Genres_in_Book(db.Model):
     __tablename__ = "genres_book"
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-
     id_book = db.Column(db.String(36), db.ForeignKey('book.id'), nullable=False)
     id_genre = db.Column(db.String(36), db.ForeignKey('genre.id'), nullable=False)
 
 class Bookshelf(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(45), nullable=False, unique=True)
-
     user_books = db.relationship("User_Book", backref="bookshelf", lazy=True)
 
 class User_Book(db.Model):
@@ -89,7 +85,6 @@ class Review(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     text = db.Column(db.Text, nullable=False)
     id_user_book = db.Column(db.String(36), db.ForeignKey('user_book.id'), nullable=False)
-
     likes = db.relationship("Liked", backref="review", lazy=True)
 
 class Reading_Progress(db.Model):
@@ -97,14 +92,11 @@ class Reading_Progress(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     page = db.Column(db.Integer, nullable=False)
     note = db.Column(db.Text)
-
     id_user_book = db.Column(db.String(36), db.ForeignKey('user_book.id'), nullable=False)
-
     likes = db.relationship("Liked", backref="note", lazy=True)
 
 class Liked(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-
     id_user = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
     id_review = db.Column(db.String(36), db.ForeignKey('review.id'))
     id_note = db.Column(db.String(36), db.ForeignKey('reading_progress.id'))
