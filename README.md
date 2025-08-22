@@ -60,25 +60,13 @@ pip install -r requirements.txt
 ```
 
 #### 2.2. Criação e Preenchimento do Banco de Dados
-Digite os seguintes comandos no terminal para criar o banco de dados:
+O script do projeto já é responsável pela criação e preenchimento (sugestão) do banco de dados. Para alterar o conjunto de livros que preenchem o banco de dados:
 
-```
-flask shell
->>> db.create_all()
->>> db.session.comit()
->>> exit()
-```
+1. Entre no arquivo "app/\_\_init\_\_.py".
+2. Procure a sessão "# Alimentando Banco de Dados".
+3. Adicione o titulo do livro na variável (lista) _querys_, no formato "titulo".
 
-Ou execute o arquivo init_db.py.
-```
-python init_db.py
-```
-\
-Para alimentar o banco de dados com informações de livros, execute o arquivo seed_db.py. Caso deseje adicionar algum livro ou autor específico, edite o arquivo adicionando uma nova chamada da função "import_books(query=' ')".
-
-```
-python seed_db.py
-```
+Se for possível encontrá-lo, o livro também será adicionado no banco de dados.
 
 #### 2.3. Execução do Back-End
 Execute o arquivo "app.py".
