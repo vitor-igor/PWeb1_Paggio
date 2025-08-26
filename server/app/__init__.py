@@ -7,6 +7,7 @@ import os
 
 from .routes.admin import admin as admin_bp
 from .routes.books import books as books_bp
+from .routes.reviews import reviews as reviews_bp
 from .routes.users import users as users_bp
 from .seed_db import import_books
 
@@ -59,17 +60,18 @@ def create_app():
 
             # Alimentando Banco de Dados
             print("Alimentando banco de dados...")
-            querys = ["Conceição Evaristo", "Clarice Lispector"]
+            querys = ["Conceição Evaristo", "Clarice Lispector", "Carla Madeira", "Aline Bei", "Machado de Assis", "Taylor Jenkins Reid", "Stephen King", "John Green", "Harry Potter", "Percy Jackson", "Evelyn Hugo", "Crime e Castigo", "Algoritmos", "Quem é voce Alasca", "As vantagens de ser invisível"]
 
             for query in querys:
                 import_books(query=query)
 
-            # for letra in string.ascii_lowercase:
-            #     import_books(query=letra)
+            for letra in string.ascii_lowercase:
+                import_books(query=letra)
 
     # Conectando com as blueprints de routes
     app.register_blueprint(admin_bp, url_prefix='/api/admin')
     app.register_blueprint(books_bp, url_prefix='/api/books')
+    app.register_blueprint(reviews_bp, url_prefix='/api/reviews')
     app.register_blueprint(users_bp, url_prefix='/api')
 
     return app
