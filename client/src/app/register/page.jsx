@@ -14,17 +14,11 @@ export default function Cadastro() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const user = {
-      name: name,
-      email: email,
-      password: password,
-      image: image,
-    };
+    const user = { name, email, password, image };
+
     const res = await fetch(`http://127.0.0.1:5000/api/add/user`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     });
 
@@ -40,76 +34,104 @@ export default function Cadastro() {
   };
 
   return (
-    <>
-      <div className="flex h-screen items-center justify-center">
-        <form
-          onSubmit={handleSubmit}
-          className="items-center justify-items-center rounded bg-white/5 p-8 backdrop-blur-md"
+    <div className="bg-preto-100 flex min-h-[calc(100dvh-64px)] lg:w-full sm:w-dvw items-center justify-center px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="border-roxo-100 bg-roxo-100/10 flex w-full max-w-lg flex-col gap-5 rounded-3xl border-2 p-6 shadow-2xl backdrop-blur-md sm:p-8"
+      >
+        <h1 className="text-roxo-100 mb-2 text-center text-2xl font-extrabold tracking-tight sm:text-3xl">
+          Cadastro
+        </h1>
+
+        <div>
+          <label
+            className="text-roxo-100 mb-2 block text-sm font-semibold sm:text-base"
+            htmlFor="name"
+          >
+            Nome
+          </label>
+          <input
+            className="border-roxo-100 bg-branco-100 text-preto-100 focus:ring-roxo-100 w-full rounded-xl border px-3 py-2 shadow transition-all focus:ring-2 focus:outline-none sm:px-4"
+            placeholder="Digite seu usuário"
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            autoComplete="username"
+          />
+        </div>
+
+        <div>
+          <label
+            className="text-roxo-100 mb-2 block text-sm font-semibold sm:text-base"
+            htmlFor="email"
+          >
+            E-mail
+          </label>
+          <input
+            className="border-roxo-100 bg-branco-100 text-preto-100 focus:ring-roxo-100 w-full rounded-xl border px-3 py-2 shadow transition-all focus:ring-2 focus:outline-none sm:px-4"
+            placeholder="Digite seu e-mail"
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+          />
+        </div>
+
+        <div>
+          <label
+            className="text-roxo-100 mb-2 block text-sm font-semibold sm:text-base"
+            htmlFor="password"
+          >
+            Senha
+          </label>
+          <input
+            className="border-roxo-100 bg-branco-100 text-preto-100 focus:ring-roxo-100 w-full rounded-xl border px-3 py-2 shadow transition-all focus:ring-2 focus:outline-none sm:px-4"
+            placeholder="Digite sua senha"
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
+          />
+        </div>
+
+        <div>
+          <label
+            className="text-roxo-100 mb-2 block text-sm font-semibold sm:text-base"
+            htmlFor="image"
+          >
+            Foto de Perfil (URL)
+          </label>
+          <input
+            className="border-roxo-100 bg-branco-100 text-preto-100 focus:ring-roxo-100 w-full rounded-xl border px-3 py-2 shadow transition-all focus:ring-2 focus:outline-none sm:px-4"
+            placeholder="Informe a URL da imagem"
+            type="text"
+            id="image"
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+            autoComplete="off"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="bg-roxo-100 text-branco-100 mt-2 w-full rounded-xl px-6 py-2 font-bold shadow-lg transition-all hover:bg-[#a63a7e]"
         >
-          <h1 className="text-2xl font-bold">Cadastro</h1>
-          <div className="w-full">
-            <label className="grid">
-              <span>Nome: </span>
-              <input
-                className="outline-none"
-                placeholder="Digite seu usuário:"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </label>
-          </div>
+          Enviar
+        </button>
 
-          <div className="w-full pt-3">
-            <label className="grid">
-              <span>E-mail: </span>
-              <input
-                className="outline-none"
-                placeholder="Digite seu e-mail:"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </label>
-          </div>
-
-          <div className="w-full pt-3">
-            <label className="grid">
-              <span>Senha: </span>
-              <input
-                className="outline-none"
-                placeholder="Digite sua senha:"
-                type="text"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </label>
-          </div>
-
-          <div className="w-full pt-3">
-            <label className="grid">
-              <span>Foto de Perfil: </span>
-              <input
-                className="outline-none"
-                placeholder="Informe a URL da imagem:"
-                type="text"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              />
-            </label>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              value="Enviar"
-              className="bg-roxo-100 mt-5 w-xl"
-            >
-              Enviar
-            </button>
-          </div>
-        </form>
-      </div>
-    </>
+        <div className="flex justify-center gap-3">
+          <p>Já possui uma conta?</p>
+          <a
+            href="/login"
+            className="text-roxo-100 font-bold hover:text-[#a63a7e]"
+          >
+            Login
+          </a>
+        </div>
+      </form>
+    </div>
   );
 }
