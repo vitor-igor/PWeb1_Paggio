@@ -84,6 +84,7 @@ class User_Book(db.Model):
 class Review(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     text = db.Column(db.Text, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.now())
     id_user_book = db.Column(db.String(36), db.ForeignKey('user_book.id'), nullable=False)
     likes = db.relationship("Liked", backref="review", lazy=True)
 
