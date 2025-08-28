@@ -76,6 +76,37 @@ def add_status_book():
         return jsonify({"message": "Status created succesfully"})
     return jsonify({"message": "Impossible to create status"}), 400
 
+# Busca um conjunto de books de acordo com o status de leitura
+@books.route('/status_book/<status>', methods=["GET"])
+@login_required  # Adiciona a autenticação do usuário
+def get_books_with_status(status):
+    books = (
+        Book.query
+        .join(User_Book, Book.id == User_Book.id_book) # Necessário para filtrar o ID do usuário
+        .filter(
+            User_Book.status.ilike(f"%{status}%"),
+            User_Book.id_user == current_user.id
+        )
+        .all()
+    )
+    books_list = []
+    if books:
+        for book in books:
+            book_data = {
+                "id": book.id,
+                "title": book.title,
+                "authors": [author.name for author in book.authors],
+                "published_date": book.published_date,
+                "pages": book.pages,
+                "image": book.image,
+                "genres": [genre.name for genre in book.genres]
+            }
+            books_list.append(book_data)
+
+        return jsonify(books_list)
+    
+    return jsonify({"message": "Group of books not found"}), 404
+
 # Busca um conjunto de books de acordo com a popularidade (definida pela quantidade de registros de leitura)
 @books.route("/popular", methods=["GET"])
 def get_popular_books():
