@@ -6,15 +6,13 @@ export default function Book(props) {
 
   return (
     <div className="w-auto">
-      <div className="flex flex-wrap justify-center gap-5">
-        {books.length === 0 ? (
-          <p className="text-zinc-500">Nenhum livro encontrado.</p>
-        ) : (
+      <div className="grid lg:grid-cols-2 md:grid-cols-2 justify-items-center gap-5">
+        {books.length !== 0 && (
           books.map((data) => (
             <Link
               href={`/details/${data.id}`}
               key={data.id}
-              className="book-card bg-branco-100 text-preto-100 flex h-auto w-100 gap-5 rounded-xl p-2"
+              className="book-card bg-branco-100 text-preto-100 flex h-auto w-70 lg:w-100 gap-5 rounded-xl p-2 hover:scale-105"
             >
               <div className="relative h-[150px] w-[100px] shrink-0 overflow-hidden rounded-md">
                 <Image
