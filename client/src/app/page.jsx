@@ -1,43 +1,10 @@
 "use client";
 
 import PopularBooks from "@/components/PopularBooks";
-
-// Dados de exemplo
-const reviews = [
-  {
-    book: "O Leão, a Feiticeira e o Guarda-Roupa",
-    user: "magao",
-    avatar:
-      "https://i.pinimg.com/236x/52/52/d6/5252d6181380a508dbf9e9066afbcb97.jpg",
-    rating: 5,
-    comment:
-      "Eu só entro em guarda roupa pra me esconder do meu tio haha, brincadeiras à parte é um ótimo livro, recomendo!",
-    cover:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv95vID5vCl7oKEOxGzZLRt6Ev25cSu1-AxA&s",
-  },
-  {
-    book: "Dom Casmurro",
-    user: "chico besta fera",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLv2KlDKneKUdoAzMCJnOrcqu3OcU20g-wbA&s",
-    rating: 1,
-    comment: "Esse Bentinho é muito é corno",
-    cover: "https://m.media-amazon.com/images/I/61Z2bMhGicL.jpg",
-  },
-  {
-    book: "1984",
-    user: "kevin6721",
-    avatar:
-      "https://www.shutterstock.com/image-illustration/generic-human-man-face-front-260nw-519713362.jpg",
-    rating: 5,
-    comment:
-      "Escrever sobre os dias de hoje como se fosse o futuro eu também consigo.",
-    cover:
-      "https://m.media-amazon.com/images/I/71kxa1-0mfL._AC_UF1000,1000_QL80_.jpg",
-  },
-];
+import { useEffect, useState } from "react";
 
 function StarRating({ rating }) {
+  if (!rating) return null; 
   return (
     <div className="flex">
       {[...Array(5)].map((_, i) => (
@@ -55,6 +22,23 @@ function StarRating({ rating }) {
 }
 
 export default function HomePage() {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const res = await fetch(`http://127.0.0.1:5000/api/reviews/`);
+        if (!res.ok) throw new Error("Erro ao buscar reviews");
+        const data = await res.json();
+        setReviews(data || []);
+      } catch (error) {
+        console.error(error);
+        setReviews([]);
+      }
+    };
+    fetchReviews();
+  }, []);
+
   return (
     <div className="bg-preto-100 text-branco-100 flex min-h-[calc(100vh-64px)] w-[80dvw] flex-col justify-self-center">
       {/* Hero */}
@@ -132,35 +116,26 @@ export default function HomePage() {
           Últimas Resenhas
         </h2>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {reviews.map((r, i) => (
+          {reviews.slice(0,4).map((r, i) => (
             <div
               key={i}
               className="flex flex-col rounded-xl bg-white/10 p-4 shadow"
             >
               <div className="mb-2 flex items-center gap-3">
-                <img
-                  src={r.cover}
-                  alt={r.book}
-                  className="h-14 w-10 rounded object-cover"
-                />
                 <div className="flex items-center gap-2">
                   <img
-                    src={r.avatar}
-                    alt={r.user}
+                    src={r.user.image} 
+                    alt={r.user.name} 
                     className="border-roxo-100 h-8 w-8 rounded-full border-2 object-cover"
                   />
-                  <span className="font-semibold">{r.user}</span>
+                  <span className="font-semibold">{r.user.name}</span>{" "}
                 </div>
               </div>
-              <span className="text-roxo-100 font-semibold">{r.book}</span>
-              <StarRating rating={r.rating} />
-              <p className="mt-2 text-sm text-gray-300 italic">"{r.comment}"</p>
+              <p className="mt-2 text-sm text-gray-300 italic">"{r.text}"</p>{" "}
             </div>
           ))}
         </div>
       </section>
-
-      
     </div>
   );
 }
