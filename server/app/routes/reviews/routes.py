@@ -5,9 +5,34 @@ from flask_login import login_required, current_user
 
 from app.models import db, Book, User, Review, User_Book
 
+# Busca as reviews mais recentes
+@reviews.route('/', methods=['GET'])
+def get_reviews():
+    reviews = (
+            Review.query
+            .order_by(Review.date.desc())
+            .limit(10)
+        )
+
+    reviews_list = []
+    for review in reviews:
+        user = User.query.get(review.user_book.id_user)
+        reviews_list.append({
+            "id": review.id,
+            "text": review.text,
+            "date": review.date.strftime("%d/%m/%Y"),
+            "user": {
+                "id": user.id,
+                "name": user.name,
+                "image": user.image
+            }
+        })
+
+    return jsonify(reviews_list)
+
 # Busca as reviews de um book específico
 @reviews.route('/<book_id>', methods=['GET'])
-def get_reviews(book_id):
+def get_book_reviews(book_id):
     book = Book.query.get(book_id)
 
     if not book:
