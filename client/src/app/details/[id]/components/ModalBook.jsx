@@ -14,29 +14,36 @@ import {
 } from "react-icons/ti";
 import { LiaHourglassHalfSolid } from "react-icons/lia";
 import { TfiTimer } from "react-icons/tfi";
+import Link from "next/link";
 
-const bookshelfs = ["Lido", "Lendo", "Quero ler", "Relendo", "Abandonei"];
+const bookshelfs = ["TheBest", "Lido", "Lendo", "Quero ler", "Relendo", "Abandonei"];
 
 export default function ModalBook({ book_id }) {
   const [modalAdicionarStatus, setModalAdicionarStatus] = useState(false);
   const [modalEditarStatus, setModalEditarStatus] = useState(false);
   const [status, setStatus] = useState("");
 
+  const [modalAvaliar, setModalAvaliar] = useState(false);
+  const [modalHistorico, setModalHistorico] = useState(false);
+  const [modalData, setModalData] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
+
   const showModalAdicionarStatus = () => {
-    {
-      modalAdicionarStatus
-        ? setModalAdicionarStatus(false)
-        : setModalAdicionarStatus(true);
-    }
+    modalAdicionarStatus
+      ? setModalAdicionarStatus(false)
+      : setModalAdicionarStatus(true);
   };
 
   const showModalEditarStatus = () => {
-    {
-      modalEditarStatus
-        ? setModalEditarStatus(false)
-        : setModalEditarStatus(true);
-    }
+    modalEditarStatus
+      ? setModalEditarStatus(false)
+      : setModalEditarStatus(true);
   };
+
+  const showModalAvaliar = () => setModalAvaliar((prev) => !prev);
+  const showModalHistorico = () => setModalHistorico((prev) => !prev);
+  const showModalData = () => setModalData((prev) => !prev);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,12 +86,12 @@ export default function ModalBook({ book_id }) {
 
       {modalAdicionarStatus == true && (
         <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/70">
-          <div className="bg-preto-100 text-branco-100 w-md rounded-xl p-10 shadow-lg">
+          <div className="bg-preto-100 text-branco-100 rounded-xl p-10 shadow-lg lg:w-md">
             <div className="flex justify-between">
               <h2 className="pb-4 text-2xl font-bold">Adicionar à estante:</h2>
-              <div className="items-center justify-center">
+              <div className="items-center justify-center justify-self-center">
                 <button
-                  className="bg-roxo-100 cursor-pointer rounded-full p-2"
+                  className="bg-roxo-100 ml-3 cursor-pointer rounded-full p-2"
                   onClick={showModalAdicionarStatus}
                 >
                   <IoClose className="text-branco-100 text-sm" />
@@ -117,10 +124,10 @@ export default function ModalBook({ book_id }) {
 
       {modalEditarStatus == true && (
         <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/70">
-          <div className="bg-preto-100 text-branco-100 w-xl rounded-xl p-10 shadow-lg">
+          <div className="bg-preto-100 text-branco-100 w-auto rounded-xl p-10 shadow-lg">
             <div className="flex justify-between">
               <h2 className="pb-4 text-2xl font-bold">Editar à estante:</h2>
-              <div className="items-center justify-center">
+              <div className="items-center justify-center justify-items-center">
                 <button
                   className="bg-roxo-100 cursor-pointer rounded-full p-2"
                   onClick={showModalEditarStatus}
@@ -130,45 +137,137 @@ export default function ModalBook({ book_id }) {
               </div>
             </div>
 
-            <div className="flex flex-wrap justify-between gap-y-3">
-              <div className="status bg-branco-100/10 flex h-20 w-60 items-center justify-items-center gap-2 rounded-md p-4">
-                <FaBookmark />
-                Status
-              </div>
-
-              <div className="avaliacao bg-branco-100/10 flex h-20 w-60 items-center justify-items-center gap-2 rounded-md p-4">
-                <TiStarFullOutline />
-                <TiStarOutline />
+            <div className="grid grid-cols-2 justify-items-center gap-3">
+              <button
+                className="avaliacao bg-branco-100/10 flex h-20 w-full cursor-pointer items-center justify-center gap-2 rounded-md p-4"
+                onClick={showModalAvaliar}
+              >
                 <TiStarHalfOutline />
                 Avaliar
-              </div>
+              </button>
 
-              <div className="data bg-branco-100/10 flex h-20 w-60 items-center justify-items-center gap-2 rounded-md p-4">
+              <button
+                className="data bg-branco-100/10 flex h-20 w-full cursor-pointer items-center justify-center gap-2 rounded-md p-4"
+                onClick={showModalData}
+              >
                 <HiOutlineCalendarDateRange />
-                28/07/2025
-              </div>
+                Data
+              </button>
 
-              <div className="tempo bg-branco-100/10 flex h-20 w-60 items-center justify-items-center gap-2 rounded-md p-4">
-                <LiaHourglassHalfSolid />
-                Tempo de leitura
-              </div>
-
-              <div className="resenha bg-branco-100/10 flex h-20 w-60 items-center justify-items-center gap-2 rounded-md p-4">
-                <CgFileDocument />
-                Escrever resenha
-              </div>
-
-              <div className="historico bg-branco-100/10 flex h-20 w-60 items-center justify-items-center gap-2 rounded-md p-4">
+              <button
+                className="tempo bg-branco-100/10 flex h-20 w-full cursor-pointer items-center justify-center gap-2 rounded-md p-4"
+                onClick={showModalHistorico}
+              >
                 <TfiTimer />
                 Histórico de leitura
-              </div>
-            </div>
+              </button>
 
+              <Link href={`/reviews/${book_id}`} className="w-full">
+                <div className="resenha bg-branco-100/10 flex h-20 w-full items-center justify-center gap-2 rounded-md p-4">
+                  <CgFileDocument />
+                  Escrever resenha
+                </div>
+              </Link>
+            </div>
             <button
               className="bg-roxo-100 z-10 mt-5 flex w-full cursor-pointer items-center justify-center rounded-2xl p-2"
               onClick={handleSubmit}
             >
               <p>Enviar</p>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Avaliar */}
+      {modalAvaliar && (
+        <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/70">
+          <div className="bg-branco-100 text-preto-100 min-w-[300px] rounded-xl p-8 shadow-lg">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-xl font-bold">Avaliar livro</h3>
+              <button onClick={showModalAvaliar}>
+                <IoClose className="text-preto-100 text-lg" />
+              </button>
+            </div>
+            <div className="mb-4 flex gap-2">
+              {[...Array(5)].map((star, index) => {
+                const currentRating = index + 1;
+                return (
+                  <label key={currentRating}>
+                    <input
+                      type="radio"
+                      name="rating"
+                      value={currentRating}
+                      onClick={() => setRating(currentRating)}
+                      className="hidden"
+                    />
+                    <TiStarFullOutline
+                      className={`cursor-pointer text-2xl transition-colors duration-200 ${
+                        currentRating <= (hover || rating)
+                          ? "text-yellow-400"
+                          : "text-gray-300"
+                      }`}
+                      onMouseEnter={() => setHover(currentRating)}
+                      onMouseLeave={() => setHover(null)}
+                    />
+                  </label>
+                );
+              })}
+            </div>
+            <button
+              className="bg-roxo-100 text-branco-100 w-full rounded px-4 py-2"
+              onClick={showModalAvaliar}
+            >
+              Salvar avaliação
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Data */}
+      {modalData && (
+        <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/70">
+          <div className="bg-branco-100 text-preto-100 min-w-[300px] rounded-xl p-8 shadow-lg">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-xl font-bold">Editar data</h3>
+              <button onClick={showModalData}>
+                <IoClose className="text-preto-100 text-lg" />
+              </button>
+            </div>
+            <input
+              type="date"
+              className="mb-4 w-full rounded border px-2 py-1"
+            />
+            <button
+              className="bg-roxo-100 text-branco-100 w-full rounded px-4 py-2"
+              onClick={showModalData}
+            >
+              Salvar data
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Histórico de leitura */}
+      {modalHistorico && (
+        <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/70">
+          <div className="bg-branco-100 text-preto-100 min-w-[300px] rounded-xl p-8 shadow-lg">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-xl font-bold">Histórico de leitura</h3>
+              <button onClick={showModalHistorico}>
+                <IoClose className="text-preto-100 text-lg" />
+              </button>
+            </div>
+            <input
+              type="number"
+              placeholder="Digite a última página lida"
+              className="mb-4 w-full rounded border px-2 py-1"
+            />
+            <button
+              className="bg-roxo-100 text-branco-100 w-full rounded px-4 py-2"
+              onClick={showModalHistorico}
+            >
+              Salvar página
             </button>
           </div>
         </div>
