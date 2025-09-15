@@ -4,6 +4,8 @@
 
 Este projeto tem como objetivo desenvolver uma aplicação web para leitores acompanharem suas leituras, organizarem bibliotecas pessoais e descobrirem novos livros. O usuário poderá registrar livros lidos, criar metas, escrever resenhas, dar notas, montar listas temáticas e acompanhar o progresso de leitura em tempo real.
 
+![Preview do Projeto](preview.png)
+
 Algumas das tecnologias utilizadas serão:
 
 <div align="center">
